@@ -7,6 +7,8 @@ import { Result } from 'src/common/result';
 @Injectable()
 export class PautaService {
 
+    static TEMPO_PADRAO_MINUTOS = 10 
+
     constructor(
         @Inject('PAUTA_PROVIDER')
         private readonly PautaRepository: Repository<Pauta>
@@ -32,6 +34,25 @@ export class PautaService {
         const dto = toRepresentation(pautaComMetodo);
 
         return dto
+    }
+
+    async inicarSessao(id: string, tempo: number = PautaService.TEMPO_PADRAO_MINUTOS ){
+        const pauta = await this.PautaRepository.findOne({
+            where: {
+                id: id 
+            }
+        })
+
+        if(!pauta){
+            return false
+        }
+
+        const tempoAbertura = new Date();
+        pauta!.abertura = tempoAbertura
+        const aberturaEmMilisegundos = tempoAbertura.getTime()
+        pauta!.fechamento = new Date(aberturaEmMilisegundos + tempo * 60000);
+
+        return await this.PautaRepository.save(pauta!)
     }
 
     async retornarPautas(): Promise<Pauta[]>{

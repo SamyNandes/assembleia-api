@@ -8,6 +8,7 @@ import { databaseProviders } from 'src/database/database.provider';
 @Module({
     imports: [DatabaseModule],
     providers: [...PautaProvider, PautaService],
-    controllers: [PautaController]
+    controllers: [PautaController],
+    exports: [PautaService]
 })
 export class PautaModule {}

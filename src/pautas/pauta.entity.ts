@@ -28,10 +28,26 @@ export class Pauta {
         
         return TIPO_STATUS.NAO_INICIADA
     }
+
+    public isPautaIniciada(){
+        return this.isInStatus(TIPO_STATUS.INCIADA)
+    }
+    public isPautaFinalizada(){
+        return this.isInStatus(TIPO_STATUS.FINALIZADA)
+    }
+    public isPautaNaoIniciada(){
+        return this.isInStatus(TIPO_STATUS.NAO_INICIADA)
+    }
+    public isInStatus(PautaAVerificar: TIPO_STATUS){
+        const status = this.obterStatus();
+        return status == PautaAVerificar;
+    }
+
+
 }
 
 enum TIPO_STATUS {
     NAO_INICIADA = "Pauta ainda não inciada",
     INCIADA = "Pauta iniciada",
-    FINALIZADA = "Pauta finalizada"
+    FINALIZADA = "Pauta encerrada"
 }
