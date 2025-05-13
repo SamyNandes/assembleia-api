@@ -1,11 +1,12 @@
-import { Controller, Get, HttpCode, Param, Post, Req, Res } from '@nestjs/common';
+import { Body, Controller, Get, HttpCode, Param, Post, Req, Res } from '@nestjs/common';
 import { REQUEST } from '@nestjs/core';
 import { Request, Response } from 'express';
 import { PautaService } from './pauta.service';
 import { Pauta } from './pauta.entity';
 import { HttpStatusCode } from 'axios';
-import { toRepresentation } from './pauta.DTO.resources';
+import { CriarPautaDTO, toRepresentation } from './pauta.DTO.resources';
 import { Result } from 'src/common/result';
+import { ApiBody, ApiOperation } from '@nestjs/swagger';
 
 @Controller('pauta')
 export class PautaController {
@@ -13,8 +14,10 @@ export class PautaController {
         private readonly pautaService: PautaService
     ){}
     @Post()
-    async salvarPauta(@Req() requisicao: Request, @Res() resposta: Response){
-        const conteudo = requisicao.body
+    @ApiOperation({ description: 'Criar uma Pauta' })
+    @ApiBody({ type: CriarPautaDTO })
+    async salvarPauta(@Body() requisicao, @Res() resposta: Response){
+        const conteudo = requisicao
         const respostaDoSalvamento = await this.pautaService.salvar(conteudo)
         if(typeof respostaDoSalvamento == 'string'){
             return resposta.status(409).send(respostaDoSalvamento);

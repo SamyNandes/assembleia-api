@@ -1,6 +1,8 @@
+import { ApiProperty } from "@nestjs/swagger";
 import { Pauta } from "./pauta.entity";
 
 export class CriarPautaDTO {
+    @ApiProperty({name: 'descricao', example: "Lixo acumulado no condominio"})
     descricao: string;
 }
 

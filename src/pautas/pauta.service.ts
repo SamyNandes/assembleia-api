@@ -58,4 +58,12 @@ export class PautaService {
     async retornarPautas(): Promise<Pauta[]>{
         return await this.PautaRepository.find()
     }
+    async retornarPauta(idParam: string): Promise<Pauta | null > {
+        const pautaEncontrada = await this.PautaRepository.findOne({
+            where: {
+                id: idParam
+            }
+        })
+        return pautaEncontrada
+    }
 }
