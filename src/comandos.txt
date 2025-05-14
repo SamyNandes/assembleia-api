@@ -1,0 +1,30 @@
+docker network ls 
+docker network create assembleia
+docker --name assembleia_mysql -p 3306:3306 -e MYSQL_ROOT_PASSWORD=root -e MYSQL_DATABASE=assembleia --network assembleia -d mysql 
+*muda o nome do host para assembleia_mysql*
+
+
+docker builder prune --force --limpar o cache
+docker build --tag assembleia-api:1.0 .
+
+subir a imagem
+
+docker run --name assembleia -p 3000:3000 --network assembleia assembleia-api:1.0
+
+
+# imagem base
+FROM node:18
+
+# Diretório onde ficará a aplicação
+WORKDIR /app
+
+#Copia a pasta do código fonte 
+COPY . .
+
+#Executa o comando para baixar as dependencias
+RUN npm install
+
+#Executar o comando de Build
+RUN npm run build
+
+CMD ["node", "dist/main.js"]
